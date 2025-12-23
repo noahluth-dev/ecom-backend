@@ -4,10 +4,12 @@ import {
     InferCreationAttributes,
 } from "sequelize";
 import {
+    AllowNull,
     AutoIncrement,
     Column,
     CreatedAt,
     DataType,
+    IsEmail,
     Model,
     PrimaryKey,
     Table,
@@ -30,9 +32,16 @@ export default class User extends Model<
     })
     declare id: CreationOptional<number>;
 
-    @Column
+    @AllowNull(false)
+    @Column({
+        validate: {
+            len: [1, 100]
+        }
+    })
     declare name: string
 
+    @AllowNull(false)
+    @IsEmail
     @Unique
     @Column
     declare email: string

@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors'
 import morgan from 'morgan';
 import createRoutes from './routes/index';
+import errorHandler from './middleware/error-handler';
 
 const app = express();
 
@@ -18,5 +19,7 @@ app.get('/health', (req: Request, res: Response) => {
 })
 
 createRoutes(app);
+
+app.use(errorHandler)
 
 export default app;

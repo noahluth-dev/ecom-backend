@@ -19,22 +19,8 @@ export const createUserRoutes = (app: Express) => {
             email: req.body.email
         }
 
-        try {
-            const user = await repository.createUser(body);
-
-            res.json({ status: 201, user })
-        }
-        catch (error) {
-            console.log(error);
-            res.status(400).json(
-                {
-                    error: {
-                        message: error instanceof Error ? error
-                            .message : "An error occurred when creating the user."
-                    }
-                }
-            )
-        }
+        const user = await repository.createUser(body);
+        res.json({ status: 201, user })
     })
 
     app.put('/users/:id', async (req: Request, res: Response) => {
@@ -43,28 +29,14 @@ export const createUserRoutes = (app: Express) => {
             email: req.body.email
         }
 
-        try {
-            const user = await repository.updateUser(Number(req.params.id), body);
+        const user = await repository.updateUser(Number(req.params.id), body);
+        res.json({ status: 201, user })
 
-            res.json({ status: 201, user })
-        }
-        catch (error) {
-            console.log(error);
-            res.status(400).json(
-                {
-                    error: {
-                        message: error instanceof Error ? error
-                            .message : "An error occurred when creating the user."
-                    }
-                }
-            )
-        }
     })
 
     app.delete('/users/:id', async (req: Request, res: Response) => {
 
         const result = await repository.deleteUser(Number(req.params.id));
-
         res.json({ status: 201, user_deleted: result })
 
     })
