@@ -3,6 +3,7 @@ import config from '../../config';
 
 export default class BaseRepository {
     sequelizeClient: Sequelize;
+    defaultLimit:number = 100;
     constructor() {
         this.sequelizeClient = new Sequelize({
             host: config.db.host,
@@ -11,7 +12,10 @@ export default class BaseRepository {
             dialect: "mysql",
             username: config.db.username,
             password: config.db.password,
+            models: [__dirname + "/../models"]
         });
 
     }
 }
+
+export type Constructor<T = {}> = new (...args: any[]) => T;
