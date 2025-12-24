@@ -9,6 +9,7 @@ import {
     Column,
     CreatedAt,
     DataType,
+    HasMany,
     IsEmail,
     Model,
     PrimaryKey,
@@ -16,6 +17,7 @@ import {
     Unique,
     UpdatedAt,
 } from "sequelize-typescript";
+import Post from "./Post";
 
 @Table({
     tableName: 'users',
@@ -47,13 +49,16 @@ export default class User extends Model<
     declare email: string
 
     @CreatedAt
-    declare createdAt: CreationOptional<Date>
+    declare created_at: CreationOptional<Date>
 
     @UpdatedAt
-    declare updatedAt: CreationOptional<Date>
+    declare updated_at: CreationOptional<Date>
+
+    @HasMany(() => Post)
+    declare posts?: InferAttributes<Post>[];
 
     public toJSON() {
-        return { ...this.get(), createdAt: undefined, updatedAt: undefined }
+        return { ...this.get(), created_at: undefined, updated_at: undefined }
     }
 
 }

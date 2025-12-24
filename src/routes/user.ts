@@ -1,5 +1,6 @@
 import { Express, Request, Response } from "express";
 import repository from "../data/repository";
+import { error } from "node:console";
 
 export const createUserRoutes = (app: Express) => {
     app.get('/users', async (req: Request, res: Response) => {
@@ -10,7 +11,21 @@ export const createUserRoutes = (app: Express) => {
     app.get('/users/:id', async (req: Request, res: Response) => {
         const id = Number(req.params.id);
         const user = await repository.getUser(id);
-        res.json({ status: 200, user })
+    })
+
+    app.get('/users/:id/posts', async (req: Request, res: Response) => {
+        const user_id = parseInt(req.params.id);
+        const user = await repository.getUser(user_id);
+        if (!user) {
+            return res.status(400).json({
+                error: {
+                    message: 'User not found'
+                }
+            })
+        }
+
+        const userPosts = await repository.getUserPost(user)
+        return res.status(200).json(userPosts)
     })
 
     app.post('/users', async (req: Request, res: Response) => {
